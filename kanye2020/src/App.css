@@ -1,0 +1,9 @@
+.App {
+    margin: 30px;
+}
+
+h2 {
+    font-weight: 100;
+    color: gray;
+    font-size: 150%;
+}
