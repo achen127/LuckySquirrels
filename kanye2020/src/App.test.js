@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import SignUpForm from './TeamSignUp';
-
 import { shallow, mount } from 'enzyme';
 
 describe("Reset button", () => {
@@ -32,7 +31,7 @@ describe("Reset button", () => {
   });
 
   it("should clear birthday form", () => {
-    const birthInput = wrapperForm.find('#name');
+    const birthInput = wrapperForm.find('#dob');
     birthInput.simulate('change', { target: { value: '10/10/1990' } });
     expect(birthInput.props().value).toEqual('10/10/1990');
     resetButton.simulate('click');
@@ -40,7 +39,7 @@ describe("Reset button", () => {
   });
 
   it("should clear first password form", () => {
-    const passInput = wrapperForm.find('#name');
+    const passInput = wrapperForm.find('#password');
     passInput.simulate('change', { target: { value: '123456' } });
     expect(passInput.props().value).toEqual('123456');
     resetButton.simulate('click');
@@ -48,7 +47,7 @@ describe("Reset button", () => {
   });
 
   it("should clear confirm password form", () => {
-    const confirmInput = wrapperForm.find('#name');
+    const confirmInput = wrapperForm.find('#passwordConf');
     confirmInput.simulate('change', { target: { value: '123456' } });
     expect(confirmInput.props().value).toEqual('123456');
     resetButton.simulate('click');
