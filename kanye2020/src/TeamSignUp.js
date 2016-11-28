@@ -104,7 +104,7 @@ class EmailInput extends React.Component {
     //pattern comparison from w3c https://www.w3.org/TR/html-markup/input.email.html#input.email.attrs.value.single
     var valid = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(currentValue)
     if (!valid) {
-      return { invalidEmail: true, isValid: false };
+      return { invalid: true, isValid: false };
     }
 
     return { isValid: true }; //no errors
@@ -187,7 +187,7 @@ class RequiredInput extends React.Component {
           value={this.props.value}
           onChange={(e) => this.handleChange(e)}
           />
-        {errors &&
+        {errors.required &&
           <p className="help-block error-missing">{this.props.errorMessage}</p>
         }
       </div>
@@ -269,9 +269,10 @@ class BirthdayInput extends React.Component {
  */
 class PasswordConfirmationInput extends React.Component {
   validate(currentValue) {
-    if (currentValue === '' || this.props.password === '') { //check both entries
+    if (currentValue !== this.props.password) { //check both entries
       return { mismatched: true, isValid: false };
-    }
+    } 
+
 
     return { isValid: true }; //no errors
   }
@@ -282,7 +283,7 @@ class PasswordConfirmationInput extends React.Component {
 
     //what to assign to parent's state
     var stateUpdate = {
-      'passConf': {
+      'passwordConf': {
         value: event.target.value,
         valid: isValid
       }
