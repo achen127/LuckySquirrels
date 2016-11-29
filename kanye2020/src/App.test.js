@@ -25,21 +25,20 @@ describe('email input', () => {
       expect(wrapper.find('p').text()).toEqual("we need to know your email address");
   });
 
-  //sinon in progress
-  // it('update parent should be called with correct parameters',() => {
-  //   const spyEmail = sinon.spy(EmailInput.prototype, 'updateParent');
-  //   const wrapper = shallow(<EmailInput value="email@email.com"/>);
-  //   var param = spyEmail.getCall(0);
-  //   var target =  {
-  //     'email': {
-  //       value: 'email@email.com',
-  //       valid: 'true'
-  //     }
-  //   };
+  sinon in progress
+  it('update parent should be called with correct parameters',() => {
+    const spyEmail = sinon.spy(EmailInput.prototype, 'updateParent');
+    const wrapper = shallow(<EmailInput value="email@email.com"/>);
+    var param = spyEmail.getCall(0);
+    var target =  {
+      'email': {
+        value: 'email@email.com',
+        valid: 'true'
+      }
+    };
 
     expect(param).toEqual(target);
   });
-});
 
 describe('Birthday input', () => {
 
