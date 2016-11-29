@@ -86,6 +86,15 @@ class SignUpForm extends React.Component {
  * A component representing a controlled input for an email address
  */
 class EmailInput extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.updateParent = this.updateParent.bind(this);
+  }
+
+  updateParent(stateUpdate) {
+    this.props.updateParent(stateUpdate);
+  }
   validate(currentValue) {
     if (currentValue === '') { //check presence
       return { missing: true, isValid: false }
@@ -95,7 +104,7 @@ class EmailInput extends React.Component {
     //pattern comparison from w3c https://www.w3.org/TR/html-markup/input.email.html#input.email.attrs.value.single
     var valid = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(currentValue)
     if (!valid) {
-      return { invalidEmail: true, isValid: false };
+      return { invalid: true, isValid: false };
     }
 
     return { isValid: true }; //no errors
@@ -191,6 +200,7 @@ class RequiredInput extends React.Component {
  * A component representing a controlled input for a birthdate (min age: 13)
  */
 class BirthdayInput extends React.Component {
+  
   validate(currentValue) {
     if (currentValue === '') { //check presence
       return { missing: true, isValid: false }
@@ -206,7 +216,7 @@ class BirthdayInput extends React.Component {
     var d = new Date(); //today
     d.setYear(d.getFullYear() - 13); //subtract 13 from the year
     var minTimestamp = d.getTime();
-    if (timestamp < minTimestamp) {
+    if (timestamp > minTimestamp) {
       return { notOldEnough: true, isValid: false }
     }
 
