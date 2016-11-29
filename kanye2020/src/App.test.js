@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import SignUpForm from './TeamSignUp';
-import { EmailInput, BirthdayInput, RequiredInput } from './TeamSignUp';
+import SignUpForm, {RequiredInput, PasswordConfirmationInput, EmailInput, BirthdayInput} from './TeamSignUp';
+
 
 import { shallow, mount } from 'enzyme';
 import sinon from 'sinon';
@@ -206,9 +206,6 @@ describe("Reset button", () => {
 });
 
 describe("<RequiredInput> component", () => {
-  // beforeEach(() => {
-  //   wrapper = shallow(<RequiredInput />);
-  // }); 
 
   it("should show no message for valid input", () => {
     const wrapper = shallow(<RequiredInput value="abc" />)
@@ -217,8 +214,7 @@ describe("<RequiredInput> component", () => {
 
   it("should show proper error message for missing input", () => {
     const wrapper = shallow(<RequiredInput value="" />)
-    expect(wrapper.find('p').props()).toEqual("we need to know your name");
-    expect(wrapper.find('p').props()).toEqual("your password can't be blank");
+    expect(wrapper.find('p').length).toEqual(1);
   });
 
   it("should call updateParent function is called with the correct parameters", () => {
@@ -228,7 +224,8 @@ describe("<RequiredInput> component", () => {
 
 describe("<PasswordConfirmationInput> component", () => {
   it("should show no error message for passwords that match", () => {
-
+    const wrapper = shallow(<PasswordConfirmationInput value="123" password="123" />)
+    expect(wrapper.find('p').length).toEqual(0); 
   });
 
   it("should show error message for passwords that do not match", () => {
