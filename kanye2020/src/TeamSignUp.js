@@ -39,12 +39,14 @@ class SignUpForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     console.log('Submitted!');
-    this.props.submitCallback(this.state);
+    console.log(this.props);
+    this.props.handleSubmit(this.state);
   }
 
   render() {
     //if all fields are valid, button should be enabled
-    var buttonEnabled = (this.state.email.valid && this.state.name.valid && this.state.dob.isValid && this.state.password.valid);
+    var buttonEnabled = (this.state.email.valid && this.state.name.valid && this.state.dob.valid && this.state.password.valid && this.state.passwordConf.valid);
+    console.log(buttonEnabled);
 
     return (
       <form name="signupForm" onSubmit={(e) => this.handleSubmit(e)}>
@@ -72,7 +74,7 @@ class SignUpForm extends React.Component {
         {/* Submit Buttons */}
         <div className="form-group">
           <button id="resetButton" type="reset" className="btn btn-default" onClick={(e) => this.handleReset(e)}>Reset</button> {' ' /*space*/}
-          <button id="submitButton" type="submit" className="btn btn-primary" disabled={buttonEnabled}>Sign Me Up!</button>
+          <button id="submitButton" type="submit" className="btn btn-primary" onClick={(e) => this.handleSubmit(e)} disabled={!buttonEnabled}>Sign Me Up!</button>
         </div>
 
       </form>
@@ -94,7 +96,7 @@ class EmailInput extends React.Component {
   updateParent(stateUpdate) {
     this.props.updateParent(stateUpdate);
   }
-
+  
   validate(currentValue) {
     if (currentValue === '') { //check presence
       return { missing: true, isValid: false }
@@ -104,7 +106,7 @@ class EmailInput extends React.Component {
     //pattern comparison from w3c https://www.w3.org/TR/html-markup/input.email.html#input.email.attrs.value.single
     var valid = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(currentValue)
     if (!valid) {
-      return { invalidEmail: true, isValid: false };
+      return { invalid: true, isValid: false };
     }
 
     return { isValid: true }; //no errors
@@ -186,8 +188,8 @@ class RequiredInput extends React.Component {
         <input type={this.props.type} id={this.props.id} name={this.props.field} className="form-control" placeholder={this.props.placeholder}
           value={this.props.value}
           onChange={(e) => this.handleChange(e)}
-          />
-        {errors &&
+        />
+        {errors.required &&
           <p className="help-block error-missing">{this.props.errorMessage}</p>
         }
       </div>
@@ -200,6 +202,7 @@ class RequiredInput extends React.Component {
  * A component representing a controlled input for a birthdate (min age: 13)
  */
 class BirthdayInput extends React.Component {
+  
   validate(currentValue) {
     if (currentValue === '') { //check presence
       return { missing: true, isValid: false }
@@ -269,9 +272,10 @@ class BirthdayInput extends React.Component {
  */
 class PasswordConfirmationInput extends React.Component {
   validate(currentValue) {
-    if (currentValue === '' || this.props.password === '') { //check both entries
+    if (currentValue !== this.props.password) { //check both entries
       return { mismatched: true, isValid: false };
-    }
+    } 
+
 
     return { isValid: true }; //no errors
   }
