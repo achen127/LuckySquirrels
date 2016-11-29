@@ -49,19 +49,19 @@ describe('email input', () => {
 describe('Birthday input', () => {
 
   it('should have ISO date format and no error message', () => {
-    const wrapper = shallow(<BirthdayInput value="2000-03-25" />) // render email input
+    const wrapper = shallow(<BirthdayInput value="2000-03-25" />) 
     expect(wrapper.find('p').length).toEqual(0);
   });
   it('should have short date format and no error message', () => {
-    const wrapper = shallow(<BirthdayInput value="03/25/2000" />) // render email input
+    const wrapper = shallow(<BirthdayInput value="03/25/2000" />) 
     expect(wrapper.find('p').length).toEqual(0);
   });
   it('should have long date format and no error message', () => {
-    const wrapper = shallow(<BirthdayInput value="Mar 25 2000" />) // render email input
+    const wrapper = shallow(<BirthdayInput value="Mar 25 2000" />) 
     expect(wrapper.find('p').length).toEqual(0);
   })
   it('should have full date format and no error message', () => {
-    const wrapper = shallow(<BirthdayInput value="Wednesday March 25 2000" />) // render email input
+    const wrapper = shallow(<BirthdayInput value="Wednesday March 25 2000" />) 
     expect(wrapper.find('p').length).toEqual(0);
   })
   it('should have wrong format and 1 error message', () => {
@@ -100,7 +100,6 @@ describe('Birthday input', () => {
       };
 
     input.simulate('change', {target:{value: "08/11/1997"}})
-    //input.simulate('change',{target:{value:{expected}}});
     expect(spy.called).toEqual(true);
     var param = spy.getCall(0).args[0];
      expect(param).toEqual(expected);
