@@ -25,7 +25,6 @@ class SignUpForm extends React.Component {
 
   //callback for the reset button
   handleReset(event) {
-    console.log('Reset!');
     var reset = {
       email: { value: '', valid: false },
       name: { value: '', valid: false },
@@ -88,6 +87,16 @@ class SignUpForm extends React.Component {
  * A component representing a controlled input for an email address
  */
 class EmailInput extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.updateParent = this.updateParent.bind(this);
+  }
+
+  updateParent(stateUpdate) {
+    this.props.updateParent(stateUpdate);
+  }
+
   validate(currentValue) {
     if (currentValue === '') { //check presence
       return { missing: true, isValid: false }
@@ -115,7 +124,7 @@ class EmailInput extends React.Component {
       }
     };
 
-    this.props.updateParent(stateUpdate) //update parent state
+    this.updateParent(stateUpdate) //update parent state
   }
 
   render() {
