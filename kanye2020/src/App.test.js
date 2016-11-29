@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import SignUpForm, {RequiredInput, PasswordConfirmationInput, EmailInput, BirthdayInput} from './TeamSignUp';
+import {RequiredInput, PasswordConfirmationInput, EmailInput, BirthdayInput} from './TeamSignUp';
+import SignUpForm from './TeamSignUp'; 
 
 
 import { shallow, mount } from 'enzyme';
@@ -209,12 +210,12 @@ describe("<RequiredInput> component", () => {
 
   it("should show no message for valid input", () => {
     const wrapper = shallow(<RequiredInput value="abc" />)
-    expect(wrapper.find('p').text.length).toEqual(0);
+    expect(wrapper.find('.error-missing').text.length).toEqual(0);
   });
 
   it("should show proper error message for missing input", () => {
     const wrapper = shallow(<RequiredInput value="" />)
-    expect(wrapper.find('p').length).toEqual(1);
+    expect(wrapper.find('.error-missing').length).toEqual(1);
   });
 
   it("should call updateParent function is called with the correct parameters", () => {
@@ -225,7 +226,7 @@ describe("<RequiredInput> component", () => {
 describe("<PasswordConfirmationInput> component", () => {
   it("should show no error message for passwords that match", () => {
     const wrapper = shallow(<PasswordConfirmationInput value="123" password="123" />)
-    expect(wrapper.find('p').length).toEqual(0); 
+    expect(wrapper.find('.error-mismatched').length).toEqual(0); 
   });
 
   it("should show error message for passwords that do not match", () => {
