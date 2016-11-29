@@ -186,7 +186,7 @@ class RequiredInput extends React.Component {
         <input type={this.props.type} id={this.props.id} name={this.props.field} className="form-control" placeholder={this.props.placeholder}
           value={this.props.value}
           onChange={(e) => this.handleChange(e)}
-          />
+        />
         {errors.required &&
           <p className="help-block error-missing">{this.props.errorMessage}</p>
         }

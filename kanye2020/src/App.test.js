@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import SignUpForm from './TeamSignUp';
+import SignUpForm, {RequiredInput} from './TeamSignUp';
 
 import { shallow, mount } from 'enzyme';
 
@@ -32,7 +32,7 @@ describe("Reset button", () => {
   });
 
   it("should clear birthday form", () => {
-    const birthInput = wrapperForm.find('#name');
+    const birthInput = wrapperForm.find('#dob');
     birthInput.simulate('change', { target: { value: '10/10/1990' } });
     expect(birthInput.props().value).toEqual('10/10/1990');
     resetButton.simulate('click');
@@ -40,7 +40,7 @@ describe("Reset button", () => {
   });
 
   it("should clear first password form", () => {
-    const passInput = wrapperForm.find('#name');
+    const passInput = wrapperForm.find('#password');
     passInput.simulate('change', { target: { value: '123456' } });
     expect(passInput.props().value).toEqual('123456');
     resetButton.simulate('click');
@@ -48,13 +48,44 @@ describe("Reset button", () => {
   });
 
   it("should clear confirm password form", () => {
-    const confirmInput = wrapperForm.find('#name');
+    const confirmInput = wrapperForm.find('#passwordConf');
     confirmInput.simulate('change', { target: { value: '123456' } });
     expect(confirmInput.props().value).toEqual('123456');
     resetButton.simulate('click');
     expect(confirmInput.props().value).toEqual('');
   });
 
+});
+
+describe("<RequiredInput> component", () => {
+  // beforeEach(() => {
+  //   wrapper = shallow(<RequiredInput />);
+  // }); 
+
+  it("should show no message for valid input", () => {
+    const wrapper = shallow(<RequiredInput value="abc" />)
+    expect(wrapper.find('p').text.length).toEqual(0); 
+  });
+
+  it("should show proper error message for missing input", () => {
+    const wrapper = shallow(<RequiredInput value="" />)
+    expect(wrapper.find('p').props()).toEqual("we need to know your name");
+    expect(wrapper.find('p').props()).toEqual("your password can't be blank"); 
+  });
+
+  it("should call updateParent function is called with the correct parameters", () => {
+
+  });
+}); 
+
+describe("<PasswordConfirmationInput> component", () => {
+  it("should show no error message for passwords that match", () => {
+
+  });
+
+  it("should show error message for passwords that do not match", () => {
+
+  });
 });
 
 
