@@ -208,28 +208,84 @@ describe("Reset button", () => {
 
 describe("<RequiredInput> component", () => {
 
-  it("should show no message for valid input", () => {
-    const wrapper = shallow(<RequiredInput value="abc" />)
-    expect(wrapper.find('.error-missing').text.length).toEqual(0);
-  });
+ it("should show no message for valid input", () => {
+   const wrapper = shallow(<RequiredInput value="abc" />)
+   expect(wrapper.find('.error-missing').text.length).toEqual(0);
+ });
 
-  it("should show proper error message for missing input", () => {
-    const wrapper = shallow(<RequiredInput value="" />)
-    expect(wrapper.find('.error-missing').length).toEqual(1);
-  });
+ it("should show proper error message for missing input", () => {
+   const wrapper = shallow(<RequiredInput value="" />)
+   expect(wrapper.find('.error-missing').length).toEqual(1);
+ });
 
-  it("should call updateParent function is called with the correct parameters", () => {
+ it("should call updateParent function with the correct parameters for name input", () => {
+   const searchSpy = sinon.spy(); 
+   const wrapper = shallow(<RequiredInput updateParent={searchSpy} id="name" field="name" type="text"
+         label="Name" placeholder="your name"
+         errorMessage="we need to know your name"/>);
+   const nameInput = wrapper.find('input');
 
-  });
+   var expectedName = {
+     'name': {
+       value: 'Jane Doe',
+       valid: true
+     }
+   };
+
+   nameInput.simulate('change', {target:{value: 'Jane Doe'}});
+   expect(searchSpy.called).toEqual(true); 
+   var param = searchSpy.getCall(0).args[0]; 
+   expect(param).toEqual(expectedName);
+
+ });
+
+ it("should call updateParent function with the correct parameters for password input", () => {
+   const searchSpy = sinon.spy(); 
+   const wrapper = shallow(<RequiredInput updateParent={searchSpy} id="password" field="password" type="password"
+         label="Password" placeholder=""
+         errorMessage="your password can't be blank" />); 
+   const passwordInput = wrapper.find('input');
+
+   var expectedPassword = {
+     'password': {
+       value: 'abc', 
+       valid: true
+     }
+   };
+
+   passwordInput.simulate('change', {target:{value:'abc'}}); 
+   expect(searchSpy.called).toEqual(true); 
+   var param = searchSpy.getCall(0).args[0]; 
+   expect(param).toEqual(expectedPassword); 
+ });
 });
 
 describe("<PasswordConfirmationInput> component", () => {
-  it("should show no error message for passwords that match", () => {
-    const wrapper = shallow(<PasswordConfirmationInput value="123" password="123" />)
-    expect(wrapper.find('.error-mismatched').length).toEqual(0); 
-  });
+ it("should show no error message for passwords that match", () => {
+   const wrapper = shallow(<PasswordConfirmationInput value="123" password="123" />);
+   expect(wrapper.find('.error-mismatched').length).toEqual(0); 
+ });
 
-  it("should show error message for passwords that do not match", () => {
+ it("should show error message for passwords that do not match", () => {
+   const wrapper = shallow(<PasswordConfirmationInput value="123" password="1234" />);
+   expect(wrapper.find('.error-mismatched').length).toEqual(1); 
+ });
 
-  });
+ it("should call updateParent function with the correct parameters", () => {
+   const searchSpy = sinon.spy(); 
+   const wrapper = shallow(<PasswordConfirmationInput updateParent={searchSpy} value='abc' password='abc' />); 
+   const passwordConfInput = wrapper.find('#passwordConf');
+
+   var expectedPasswordConf = {
+     'passwordConf': {
+       value: 'abc', 
+       valid: true
+     }
+   };
+
+   passwordConfInput.simulate('change', {target:{value:'abc'}}); 
+   expect(searchSpy.called).toEqual(true); 
+   var param = searchSpy.getCall(0).args[0]; 
+   expect(param).toEqual(expectedPasswordConf); 
+ });
 });
