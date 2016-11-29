@@ -26,19 +26,23 @@ describe('email input', () => {
     expect(wrapper.find('p').text()).toEqual("we need to know your email address");
   });
 
-  sinon in progress
+  //sinon in progress
   it('update parent should be called with correct parameters', () => {
-    const spyEmail = sinon.spy(EmailInput.prototype, 'updateParent');
-    const wrapper = shallow(<EmailInput value="email@email.com" />);
-    var param = spyEmail.getCall(0);
-    var target = {
+    const spyEmail = sinon.spy();
+    const wrapper = shallow(<EmailInput updateParent={spyEmail}/>);
+    const input = wrapper.find('#email');
+    var expected = {
       'email': {
-        value: 'email@email.com',
-        valid: 'true'
+        value: 'e@e.com',
+        valid: true
       }
     };
 
-    expect(param).toEqual(target);
+    input.simulate('change', {target:{value: "e@e.com"}})
+    //input.simulate('change',{target:{value:{expected}}});
+    expect(spyEmail.called).toEqual(true);
+    var param = spyEmail.getCall(0).args[0];
+     expect(param).toEqual(expected);
   });
 });
 
@@ -83,6 +87,25 @@ describe('Birthday input', () => {
       expect(wrapper.find('p').text()).toEqual("sorry, you must be at least 13 to sign up");
     });
   });
+
+    it('update parent should be called with correct parameters', () => {
+    const spy = sinon.spy();
+    const wrapper = shallow(<BirthdayInput updateParent={spy}/>);
+    const input = wrapper.find('#dob');
+    var expected = {
+        'dob': {
+          value: "08/11/1997",
+          valid: true
+        }
+      };
+
+    input.simulate('change', {target:{value: "08/11/1997"}})
+    //input.simulate('change',{target:{value:{expected}}});
+    expect(spy.called).toEqual(true);
+    var param = spy.getCall(0).args[0];
+     expect(param).toEqual(expected);
+  });
+
 });
 
 // Form submit button tests
@@ -209,12 +232,12 @@ describe("<RequiredInput> component", () => {
 
   it("should show no message for valid input", () => {
     const wrapper = shallow(<RequiredInput value="abc" />)
-    expect(wrapper.find('p').text.length).toEqual(0);
+    expect(wrapper.find('.error-missing').text.length).toEqual(0);
   });
 
   it("should show proper error message for missing input", () => {
     const wrapper = shallow(<RequiredInput value="" />)
-    expect(wrapper.find('p').length).toEqual(1);
+    expect(wrapper.find('.error-missing').length).toEqual(1);
   });
 
   it("should call updateParent function is called with the correct parameters", () => {
@@ -225,7 +248,7 @@ describe("<RequiredInput> component", () => {
 describe("<PasswordConfirmationInput> component", () => {
   it("should show no error message for passwords that match", () => {
     const wrapper = shallow(<PasswordConfirmationInput value="123" password="123" />)
-    expect(wrapper.find('p').length).toEqual(0); 
+    expect(wrapper.find('.error-mismatched').length).toEqual(0); 
   });
 
   it("should show error message for passwords that do not match", () => {
