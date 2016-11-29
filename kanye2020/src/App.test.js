@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import SignUpForm, {RequiredInput, PasswordConfirmationInput, EmailInput, BirthdayInput} from './TeamSignUp';
-
-
+import SignUpForm, { RequiredInput, PasswordConfirmationInput, EmailInput, BirthdayInput } from './TeamSignUp';
 import { shallow, mount } from 'enzyme';
 import sinon from 'sinon';
 
@@ -115,51 +113,88 @@ describe('Submit Form Button', () => {
     wrapper = mount(<SignUpForm />);
     console.log(wrapper.find('#submitButton').props());
     console.log(wrapper.find('#submitButton').props().disabled)
+    
   })
 
+  it('checks button is disabled when email is blank', () => {
+    const email = wrapper.find('#email');
+    email.simulate('change', { target: { value: '' } });
+    expect(wrapper.find('#submitButton').props().disabled).toEqual(true)
 
+  });
+    it('checks button is disabled when email is invalid', () => {
+    const email = wrapper.find('#email');
+    email.simulate('change', { target: { value: 'sarah' } });
+    expect(wrapper.find('#submitButton').props().disabled).toEqual(true)
 
-  // it('checks button is invald when name is invalid', () => {
-  //   const name = wrapper.find('#name');
-  //   name.simulate('change', { target: { value: '' } });
-  //   expect(wrapper.find('#submitButton').props().disabled).toEqual(false)
+  });
 
-  // });
+  it('checks button is disabled when name is invalid', () => {
+    const name = wrapper.find('#name');
+    name.simulate('change', { target: { value: '' } });
+    expect(wrapper.find('#submitButton').props().disabled).toEqual(true)
 
-  // it('checks button is invald when birthdate is invalid', () => {
-  //   const password = wrapper.find('#password');
-  //   password.simulate('change', { target: { value: '' } });
-  //   expect(wrapper.find('#submitButton').props().disabled).toEqual(false)
+  });
 
-  // });
+  it('checks button is disabled when birthdate is blank', () => {
+    const password = wrapper.find('#password');
+    password.simulate('change', { target: { value: '' } });
+    expect(wrapper.find('#submitButton').props().disabled).toEqual(true)
 
-  // it('checks button is invald when password is invalid', () => {
-  //   const confirmPassword = wrapper.find('#passwordConf');
-  //   confirmPassword.simulate('change', { target: { value: '' } });
-  //   expect(wrapper.find('#submitButton').props().disabled).toEqual(false)
+  });
 
-  // });
+    it('checks button is disabled when birthdate is invalid', () => {
+    const password = wrapper.find('#password');
+    password.simulate('change', { target: { value: '11/20' } });
+    expect(wrapper.find('#submitButton').props().disabled).toEqual(true)
 
-  // it('checks button is invald when confirm password is invalid', () => {
-  //   const birthdate = wrapper.find('#dob');
-  //   birthdate.simulate('change', { target: { value: '' } });
-  //   expect(wrapper.find('#submitButton').props().disabled).toEqual(false)
+  });
 
-  // });
+    it('checks button is disabled when birthdate is too young', () => {
+    const password = wrapper.find('#password');
+    password.simulate('change', { target: { value: '11/20/2013' } });
+    expect(wrapper.find('#submitButton').props().disabled).toEqual(true)
 
-  //   it('checks if submit is enabled when form is blank', () => {
-  //   const name = wrapper.find('#name');
-  //   name.simulate('change', { target: { value: '' } });
-  //   const password = wrapper.find('#password');
-  //   password.simulate('change', { target: { value: '' } });
-  //   const confirmPassword = wrapper.find('#passwordConf');
-  //   confirmPassword.simulate('change', { target: { value: '' } });
-  //   const birthdate = wrapper.find('#dob');
-  //   birthdate.simulate('change', { target: { value: '' } });
-  //   expect(wrapper.find('#submitButton').props().disabled).toEqual(false)
-  // })
+  });
+
+  it('checks button is disabled when password is blank', () => {
+    const confirmPassword = wrapper.find('#passwordConf');
+    confirmPassword.simulate('change', { target: { value: '' } });
+    expect(wrapper.find('#submitButton').props().disabled).toEqual(true)
+
+  });
+
+    it('checks button is disabled when password and confirm password don\'t match', () => {
+    const password = wrapper.find('#password');
+    const confirmPassword = wrapper.find('#passwordConf');
+    password.simulate('change', { target: { value: 'password' } });
+    confirmPassword.simulate('change', { target: { value: 'pass' } });
+    expect(wrapper.find('#submitButton').props().disabled).toEqual(true)
+
+  });
+
+  it('checks button is disabled when confirm password is blank', () => {
+    const birthdate = wrapper.find('#dob');
+    birthdate.simulate('change', { target: { value: '' } });
+    expect(wrapper.find('#submitButton').props().disabled).toEqual(true)
+
+  });
+
+  it('checks if submit is disabled when form is blank', () => {
+    const name = wrapper.find('#name');
+    name.simulate('change', { target: { value: '' } });
+    const password = wrapper.find('#password');
+    password.simulate('change', { target: { value: '' } });
+    const confirmPassword = wrapper.find('#passwordConf');
+    confirmPassword.simulate('change', { target: { value: '' } });
+    const birthdate = wrapper.find('#dob');
+    birthdate.simulate('change', { target: { value: '' } });
+    expect(wrapper.find('#submitButton').props().disabled).toEqual(true)
+  })
 
   it('checks if submit is enabled when form is valid', () => {
+    const email = wrapper.find('#email');
+    email.simulate('change', { target: { value: 'sarahf95@gmail.com' } });
     const name = wrapper.find('#name');
     name.simulate('change', { target: { value: 'Sarah' } });
     const password = wrapper.find('#password');
@@ -168,7 +203,21 @@ describe('Submit Form Button', () => {
     confirmPassword.simulate('change', { target: { value: 'password' } });
     const birthdate = wrapper.find('#dob');
     birthdate.simulate('change', { target: { value: '11/19/95' } });
-    expect(wrapper.find('#submitButton').props().disabled).toEqual(true)
+    expect(wrapper.find('#submitButton').props().disabled).toEqual(false)
+  })
+
+  it('checks if alert appears when invalid form is submitted', () =>{
+    const alert = wrapper.state().alertMessage;
+    console.log(alert);
+    expect(alert).toEqual(false);
+  })
+
+    it('checks if alert appears when valid form is submitted', () =>{
+    const alert = wrapper.state().alertMessage;
+    const form = wrapper.find('#form');
+    form.simulate('submit');
+    console.log(alert);
+    expect(alert).toEqual(false);
   })
 
 });
@@ -247,7 +296,7 @@ describe("<RequiredInput> component", () => {
 describe("<PasswordConfirmationInput> component", () => {
   it("should show no error message for passwords that match", () => {
     const wrapper = shallow(<PasswordConfirmationInput value="123" password="123" />)
-    expect(wrapper.find('.error-mismatched').length).toEqual(0); 
+    expect(wrapper.find('.error-mismatched').length).toEqual(0);
   });
 
   it("should show error message for passwords that do not match", () => {
