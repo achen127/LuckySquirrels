@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import SignUpForm, {RequiredInput, PasswordConfirmationInput, EmailInput, BirthdayInput} from './TeamSignUp';
+import {RequiredInput, PasswordConfirmationInput, EmailInput, BirthdayInput} from './TeamSignUp';
+import SignUpForm from './TeamSignUp'; 
 
 
 import { shallow, mount } from 'enzyme';
